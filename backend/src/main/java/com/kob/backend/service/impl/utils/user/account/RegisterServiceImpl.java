@@ -24,21 +24,12 @@ public class RegisterServiceImpl implements RegisterService {
     @Override
     public Map<String, String> register(String username, String password, String confirmedPassword) {
         Map<String, String> map = new HashMap<>();
-<<<<<<< HEAD:backend/src/main/java/com/kob/backend/service/impl/utils/user/account/RegisterServiceImpl.java
-        if(username == null){
-            map.put("error_message", "用户名不能为空");
-            return map;
-        }
-        if(password == null || confirmedPassword == null){
-            map.put("error_message","密码不能为空");
-=======
         if(username == null) {
             map.put("error_message", "用户名不能为空");
             return map;
         }
         if(password == null || confirmedPassword == null) {
             map.put("error_message", "密码不能为空");
->>>>>>> fcc769d (后端实现注册、登录、访问用户信息，前端实现登录、退出、访问用户信息（4.2完结）):backend/src/main/java/com/kob/backend/service/impl/user/account/RegisterServiceImpl.java
             return map;
         }
 
@@ -48,27 +39,16 @@ public class RegisterServiceImpl implements RegisterService {
             return map;
         }
 
-<<<<<<< HEAD:backend/src/main/java/com/kob/backend/service/impl/utils/user/account/RegisterServiceImpl.java
-=======
         if(password.length() == 0 || confirmedPassword.length() == 0){
             map.put("error_message", "密码不能为空");
             return map;
         }
 
->>>>>>> fcc769d (后端实现注册、登录、访问用户信息，前端实现登录、退出、访问用户信息（4.2完结）):backend/src/main/java/com/kob/backend/service/impl/user/account/RegisterServiceImpl.java
         if(username.length() > 100){
             map.put("error_message", "用户名长度不能大于100");
             return map;
         }
 
-<<<<<<< HEAD:backend/src/main/java/com/kob/backend/service/impl/utils/user/account/RegisterServiceImpl.java
-        if(password.length() == 0 || confirmedPassword.length() == 0){
-            map.put("error_message", "密码不能为空");
-            return map;
-        }
-
-=======
->>>>>>> fcc769d (后端实现注册、登录、访问用户信息，前端实现登录、退出、访问用户信息（4.2完结）):backend/src/main/java/com/kob/backend/service/impl/user/account/RegisterServiceImpl.java
         if(password.length() > 100 || confirmedPassword.length() > 100){
             map.put("error_message", "密码长度不能大于100");
             return map;
@@ -87,18 +67,11 @@ public class RegisterServiceImpl implements RegisterService {
             map.put("error_message", "用户名已存在");
             return map;
         }
-<<<<<<< HEAD:backend/src/main/java/com/kob/backend/service/impl/utils/user/account/RegisterServiceImpl.java
-        // 存入数据库之前先把密码加密
-        String encodedPassword = passwordEncoder.encode(password);
-        String photo = "https://cdn.acwing.com/media/user/profile/photo/263323_lg_b117825085.jpg";
-        User user = new User(null, username, password, photo);
-=======
 
         //如果用户输入的注册信息合规，则将密码加密再存到数据库里
         String encodedPassword = passwordEncoder.encode(password);
         String photo = "https://cdn.acwing.com/media/user/profile/photo/263323_lg_b117825085.jpg";
         User user = new User(null, username, encodedPassword, photo);
->>>>>>> fcc769d (后端实现注册、登录、访问用户信息，前端实现登录、退出、访问用户信息（4.2完结）):backend/src/main/java/com/kob/backend/service/impl/user/account/RegisterServiceImpl.java
         userMapper.insert(user);
 
         map.put("error_message", "success");

@@ -7,10 +7,11 @@ export default {
         photo: "",
         token: "",
         is_login: false,
+        pulling_info: true, // pulling_info为true表示当前正在从服务器获取信息中
     },
     getters: {
     },
-    mutations: { // mutations用来修改用户信息
+    mutations: { // mutations用来修改用户信息，一般放同步操作的函数
         updateUser(state, user) {
             state.id = user.id;
             state.username = user.username;
@@ -26,9 +27,12 @@ export default {
             state.photo = "";
             state.token = "";
             state.is_login = false;
+        },
+        updatePullingInfo(state, pulling_info) {
+            state.pulling_info = pulling_info;
         }
     },
-    actions: { //actions里面都是修改state的函数
+    actions: { //异步操作只能放到actions里，如：从服务器拉取信息
         login(context, data) {
             $.ajax({
                 url: "http://127.0.0.1:3000/user/account/token/",
@@ -39,6 +43,7 @@ export default {
                 },
                 success(resp){
                     if(resp.error_message === "success") {
+                        localStorage.setItem("jwt_token", resp.token);
                         // 如果成功的话就将token存下来
                         context.commit("updateToken", resp.token);
                         data.success(resp);
@@ -75,6 +80,7 @@ export default {
             });
         },
         logout(context) {
+            localStorage.removeItem("jwt_token");
             context.commit("logout");
         }
     },

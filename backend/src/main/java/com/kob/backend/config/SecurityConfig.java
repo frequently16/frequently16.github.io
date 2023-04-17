@@ -37,12 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-<<<<<<< HEAD
-                //"/user/account/token/", "/user/account/register/"这两个链接是公开的
-                //如果还有更多的公开链接，就在此处添加
-=======
                 //"/user/account/token/", "/user/account/register/"这两个链接可以公开访问
->>>>>>> fcc769d (后端实现注册、登录、访问用户信息，前端实现登录、退出、访问用户信息（4.2完结）)
                 .antMatchers("/user/account/token/", "/user/account/register/").permitAll()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .anyRequest().authenticated();

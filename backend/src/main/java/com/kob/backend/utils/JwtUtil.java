@@ -15,11 +15,7 @@ import java.util.UUID;
 @Component
 public class JwtUtil {
     public static final long JWT_TTL = 60 * 60 * 1000L * 24 * 14;  // 有效期14天
-<<<<<<< HEAD
-    public static final String JWT_KEY = "SDFGjhdsfalshdfHFdsjkdsfds121232131afasdfac";
-=======
     public static final String JWT_KEY = "SDFGjhdsfalshdfHFdsjkdsfds121232131afasdfac";//服务器的密钥，长度要足够长
->>>>>>> fcc769d (后端实现注册、登录、访问用户信息，前端实现登录、退出、访问用户信息（4.2完结）)
 
     public static String getUUID() {
         return UUID.randomUUID().toString().replaceAll("-", "");

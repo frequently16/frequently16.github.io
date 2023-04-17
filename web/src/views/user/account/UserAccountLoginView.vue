@@ -1,5 +1,5 @@
 <template>
-    <ContentField>
+    <ContentField v-if="! $store.state.user.pulling_info">
         <div class="row justify-content-md-center">
             <div class="col-3">
                 <form @submit.prevent="login">
@@ -35,6 +35,24 @@ export default {
         let password = ref('');
         let error_message = ref('');
 
+        const jwt_token = localStorage.getItem("jwt_token");
+        if(jwt_token) {
+            // updateToken这个函数存在于mutations里面，因此需要用commit来调用这个函数
+            store.commit("updateToken", jwt_token);
+            // 从服务器端获取信息，即调用actions里面的getinfo函数，因此要用dispatch
+            store.dispatch("getinfo", {
+                success() {
+                    router.push({ name: "pk_index" });
+                    store.commit("updatePullingInfo", false);
+                },
+                error() {// 如果没能从服务器中获取信息，才展示登录页面
+                    store.commit("updatePullingInfo", false);
+                }
+            })
+        } else {
+            store.commit("updatePullingInfo", false);
+        }
+
         const login = () => {
             error_message.value = "";
             store.dispatch("login", {
@@ -44,7 +62,6 @@ export default {
                     store.dispatch("getinfo", {
                         success() {
                             router.push({ name: 'home' });
-                            console.log(store.state.user);
                         }
                     })
                 },
