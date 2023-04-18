@@ -50,14 +50,8 @@ export default {
         //     }
         // })
         $.ajax({
-            url: "http://127.0.0.1:3000/user/bot/update/",
-            type: "post",
-            data: {
-                bot_id: 3,
-                title: "Bot的标题7",
-                description: "Bot的描述7",
-                content: "Bot的代码7",
-            },
+            url: "http://127.0.0.1:3000/user/bot/getlist/",
+            type: "get",
             headers: {
                 Authorization: "Bearer " + store.state.user.token,
             },
