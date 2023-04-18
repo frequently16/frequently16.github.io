@@ -54,7 +54,7 @@ export default {
                 error(resp){
                     data.error(resp);
                 }
-            });
+            })
         },
         getinfo(context, data) {
             $.ajax({

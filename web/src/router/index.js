@@ -89,7 +89,8 @@ router.beforeEach((to, from, next) => {
     store.commit("updateToken", jwt_token);
     // 从服务器端获取信息，即调用actions里面的getinfo函数，因此要用dispatch
     store.dispatch("getinfo", {
-      
+      success(){},
+      error(){}
     })
   }
   // 每次在跳转页面之前都要判断一下需不需要登录，如果这个页面需要登录的话就自动跳转到登录页面
