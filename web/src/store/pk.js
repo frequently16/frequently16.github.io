@@ -5,6 +5,7 @@ export default {
         socket: null,
         opponent_username: "",// 记录用户当前竞争对手的用户名
         opponent_photo: "",// 记录用户当前竞争对手的头像
+        gamemap: null,
     },
     getters: {
     },
@@ -18,6 +19,9 @@ export default {
         },
         updateStatus(state, status) {
             state.status = status;
+        },
+        updateGamemap(state, gamemap) {
+            state.gamemap = gamemap;
         }
     },
     actions: { //异步操作只能放到actions里，如：从服务器拉取信息            
