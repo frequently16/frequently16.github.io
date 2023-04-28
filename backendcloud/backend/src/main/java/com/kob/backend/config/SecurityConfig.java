@@ -40,8 +40,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 //"/user/account/token/", "/user/account/register/"这两个链接可以公开访问
                 .antMatchers("/user/account/token/", "/user/account/register/").permitAll()
-                // 开始游戏的URL只允许本地相互调用
-                .antMatchers("/pk/start/game/").hasIpAddress("127.0.0.1")
+                // 开始游戏和接收bot移动方向的URL只允许本地相互调用
+                .antMatchers("/pk/start/game/", "/pk/receive/bot/move/").hasIpAddress("127.0.0.1")
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .anyRequest().authenticated();
 

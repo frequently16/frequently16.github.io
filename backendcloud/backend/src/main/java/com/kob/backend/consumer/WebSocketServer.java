@@ -3,8 +3,10 @@ package com.kob.backend.consumer;
 import com.alibaba.fastjson.JSONObject;
 import com.kob.backend.consumer.utils.Game;
 import com.kob.backend.consumer.utils.JwtAuthentication;
+import com.kob.backend.mapper.BotMapper;
 import com.kob.backend.mapper.RecordMapper;
 import com.kob.backend.mapper.UserMapper;
+import com.kob.backend.pojo.Bot;
 import com.kob.backend.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -32,8 +34,9 @@ public class WebSocketServer {
     // 定义一个全局变量用来访问数据库
     private static UserMapper userMapper;
     public static RecordMapper recordMapper;
-    private static RestTemplate restTemplate;
-    private Game game = null;
+    public static BotMapper botMapper;
+    public static RestTemplate restTemplate;
+    public Game game = null;
     private final static String addPlayerUrl = "http://127.0.0.1:3001/player/add/";
     private final static String removePlayerUrl = "http://127.0.0.1:3001/player/remove/";
 
@@ -45,6 +48,11 @@ public class WebSocketServer {
     @Autowired
     public void setRecordMapper(RecordMapper recordMapper) {
         WebSocketServer.recordMapper = recordMapper;
+    }
+
+    @Autowired
+    public void setBotMapper(BotMapper botMapper) {
+        WebSocketServer.botMapper = botMapper;
     }
 
     // 加了Autowired这个注解，引用到RestTempl类变量时就会找是否有唯一的带有@Bean注解的返回值是RestTempl变量的函数
@@ -79,9 +87,19 @@ public class WebSocketServer {
         }
     }
 
-    public static void startGame(Integer aId, Integer bId) {
+    public static void startGame(Integer aId, Integer aBotId, Integer bId, Integer bBotId) {
         User a = userMapper.selectById(aId), b = userMapper.selectById(bId);
-        Game game = new Game(13, 14, 20, a.getId(), b.getId());
+        Bot botA = botMapper.selectById(aBotId), botB = botMapper.selectById(bBotId);
+
+        Game game = new Game(
+                13,
+                14,
+                20,
+                a.getId(),
+                botA,
+                b.getId(),
+                botB
+        );
         game.createMap();
         if(users.get(a.getId()) != null){
             users.get(a.getId()).game = game;
@@ -120,11 +138,12 @@ public class WebSocketServer {
         }
     }
 
-    private void startMatching() {
+    private void startMatching(Integer botId) {
         System.out.println("start matching");
         MultiValueMap<String, String> data = new LinkedMultiValueMap<>();
         data.add("user_id", this.user.getId().toString());
         data.add("rating", this.user.getRating().toString());
+        data.add("bot_id", botId.toString());
         restTemplate.postForObject(addPlayerUrl, data, String.class);//String.class表示返回值的类型
     }
     private void stopMatching() {
@@ -136,9 +155,11 @@ public class WebSocketServer {
 
     private void move(int direction) {
         if(game.getPlayerA().getId().equals(user.getId())){
-            game.setNextStepA(direction);
+            if(game.getPlayerA().getBotId().equals(-1)) // 只有是亲自出马才会接收用户的指令
+                game.setNextStepA(direction);
         }else if(game.getPlayerB().getId().equals(user.getId())){
-            game.setNextStepB(direction);
+            if(game.getPlayerB().getBotId().equals(-1)) // 只有是亲自出马才会接收用户的指令
+                game.setNextStepB(direction);
         }
     }
 
@@ -149,7 +170,7 @@ public class WebSocketServer {
         JSONObject data = JSONObject.parseObject(message);
         String event = data.getString("event");
         if("start-matching".equals(event)) {
-            startMatching();
+            startMatching(data.getInteger("bot_id"));
         } else if("stop-matching".equals(event)) {
             stopMatching();
         } else if("move".equals(event)) {
