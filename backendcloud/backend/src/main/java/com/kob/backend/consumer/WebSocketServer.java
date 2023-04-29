@@ -32,7 +32,7 @@ public class WebSocketServer {
     private Session session = null;
 
     // 定义一个全局变量用来访问数据库
-    private static UserMapper userMapper;
+    public static UserMapper userMapper;
     public static RecordMapper recordMapper;
     public static BotMapper botMapper;
     public static RestTemplate restTemplate;

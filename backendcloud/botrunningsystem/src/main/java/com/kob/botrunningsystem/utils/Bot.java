@@ -56,8 +56,8 @@ public class Bot implements com.kob.botrunningsystem.utils.BotInterface {
         for(Cell c : bCells) g[c.x][c.y] = 1;
 
         int[] dx = {-1, 0, 1, 0}, dy = {0, 1, 0, -1};
-        // 枚举上下左右四个方向，找到一个空的位置来走
-        for(int i = 0; i < 4; i++) {
+        // 随机从一个方向开始枚举上下左右四个方向，找到一个空的位置来走
+        for(int j = 0, i = 4 * (int)Math.random(); j < 4; j++, i = (i + 1) % 4) {
             int x = aCells.get(aCells.size() - 1).x + dx[i];
             int y = aCells.get(aCells.size() - 1).y + dy[i];
             if(x >= 0 && x < 13 && y >= 0 && y < 14 && g[x][y] == 0) {
