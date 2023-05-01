@@ -43,6 +43,10 @@ export class Snake extends AcGameObject{
 
     }
 
+    set_eye_direction(d) {
+        this.eye_direction = d; //蛇眼睛先往那个方向看，身体再往那个方向动
+    }
+
     set_direction(d) {
         this.direction = d;
     }
@@ -57,6 +61,7 @@ export class Snake extends AcGameObject{
         const d = this.direction;
         this.next_cell = new Cell(this.cells[0].r + this.dr[d], this.cells[0].c + this.dc[d]);
         this.eye_direction = d;
+
         this.direction = -1;   //清空操作
         this.status = "move";
         this.step++;

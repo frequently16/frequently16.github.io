@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { GameMap } from "@/assets/scripts/GameMap";
+import { GameMap } from "../assets/scripts/GameMap";
 import { ref, onMounted } from 'vue'
 import { useStore } from "vuex";
 
@@ -35,7 +35,7 @@ div.gamemap {
     width: 100%;
     height: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: left;
     align-items: center;
 }
 </style>

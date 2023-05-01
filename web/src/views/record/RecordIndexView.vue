@@ -3,8 +3,12 @@
         <table class="table table-striped table-hover" style="text-align: center;">
             <thead>
                 <tr>
-                    <th>A</th>
-                    <th>B</th>
+                    <th>
+                        <canvas id="1" width="30" height="30"></canvas>
+                    </th>
+                    <th>
+                        <canvas id="2" width="30" height="30"></canvas>
+                    </th>
                     <th>结果</th>
                     <th>对战时间</th>
                     <th>操作</th>
@@ -61,7 +65,7 @@
 <script>
 import ContentField from '../../components/ContentField.vue'
 import { useStore } from 'vuex'
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import $ from 'jquery'
 import router from '../../router/index'
 
@@ -168,6 +172,37 @@ export default {
                 }
             }
         }
+
+        onMounted( () => {
+            var canvas = document.getElementById("1");
+            var ctx1 = canvas.getContext("2d");
+            ctx1.beginPath();
+            ctx1.arc(15, 15, 13, 0, 2 * Math.PI);
+            ctx1.fillStyle = "#28983D";
+            ctx1.fill();
+            ctx1.beginPath();
+            ctx1.arc(9, 15, 2, 0, 2 * Math.PI);
+            ctx1.fillStyle = "black";
+            ctx1.fill();
+            ctx1.beginPath();
+            ctx1.arc(21, 15, 2, 0, 2 * Math.PI);
+            ctx1.fillStyle = "black";
+            ctx1.fill();
+            canvas = document.getElementById("2");
+            var ctx2 = canvas.getContext("2d");
+            ctx2.beginPath();
+            ctx2.arc(15, 15, 13, 0, 2 * Math.PI);
+            ctx2.fillStyle = "#BD0303";
+            ctx2.fill();
+            ctx2.beginPath();
+            ctx2.arc(9, 15, 2, 0, 2 * Math.PI);
+            ctx2.fillStyle = "black";
+            ctx2.fill();
+            ctx2.beginPath();
+            ctx2.arc(21, 15, 2, 0, 2 * Math.PI);
+            ctx2.fillStyle = "black";
+            ctx2.fill();
+        });
 
         return {
             records,
