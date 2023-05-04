@@ -190,10 +190,14 @@ public class Game extends Thread{
                 Thread.sleep(200);
                 lock.lock();
                 try {
+                    if(nextStepA != null && nextStepB == null) {
+                        System.out.println("玩家输入已读入，但bot输入未读入！");
+                    }
                     // 如果接收到了两名玩家的下一步输入就退出函数
                     if(nextStepA != null && nextStepB != null){
                         playerA.getSteps().add(nextStepA);
                         playerB.getSteps().add(nextStepB);
+                        System.out.println("两名玩家的输入都读到了！");
                         return true;
                     }
                 } finally {
@@ -203,7 +207,7 @@ public class Game extends Thread{
                 e.printStackTrace();
             }
         }
-        // 5秒后还没有输入则判输
+        // 10秒后还没有输入则判输
         return false;
     }
 
@@ -243,15 +247,16 @@ public class Game extends Thread{
         }
     }
 
-    private void sendAllMessage(String message) {
-        if(WebSocketServer.users.get(playerA.getId()) != null) {
+    private void sendAllMessage(String message) { //向除了大黄蜂之外的所有用户发送信息
+        if(playerA.getId() != 1 && WebSocketServer.users.get(playerA.getId()) != null) {
             WebSocketServer.users.get(playerA.getId()).sendMessage(message);
         }
-        if(WebSocketServer.users.get(playerB.getId()) != null){
+        if(playerB.getId() != 1 &&  WebSocketServer.users.get(playerB.getId()) != null) {
             WebSocketServer.users.get(playerB.getId()).sendMessage(message);
-    }   }
+        }
+    }
 
-    private void sendMove() { // 向两个Client传递移动信息
+    private void sendMove() { // 每移动一步都要向两个Client传递移动信息
         lock.lock();
         try {
             JSONObject resp = new JSONObject();
@@ -259,6 +264,7 @@ public class Game extends Thread{
             resp.put("a_direction", nextStepA);
             resp.put("b_direction", nextStepB);
             sendAllMessage(resp.toJSONString());
+            // 在玩家执行下一步操作之前，把之前的操作清空掉
             nextStepA = nextStepB = null;
         } finally {
             lock.unlock();
@@ -281,7 +287,7 @@ public class Game extends Thread{
         WebSocketServer.userMapper.updateById(user);
     }
 
-    private void saveToDatabase() {
+    private void saveToDatabase() { // 每局游戏结束后将对局记录存到数据库里
         Integer ratingA = WebSocketServer.userMapper.selectById(playerA.getId()).getRating();
         Integer ratingB = WebSocketServer.userMapper.selectById(playerB.getId()).getRating();
         if("A".equals(loser)) {
@@ -331,7 +337,7 @@ public class Game extends Thread{
                     sendResult();
                     break;
                 }
-            } else { // 如果没有获取两条蛇的下一步操作，整个游戏就结束了
+            } else { // 如果没有获取两条蛇的下一步操作也就是说nextStep函数等待了10s后没接收到蛇A或B的操作，返回了false，整个游戏就结束了
                 status = "finished";
                 lock.lock();
                 try {

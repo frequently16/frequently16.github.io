@@ -24,17 +24,18 @@ import java.util.concurrent.CopyOnWriteArraySet;
 
 @Component
 @ServerEndpoint("/websocket/{token}")  // 注意不要以'/'结尾
-public class WebSocketServer {
+public class WebSocketServer implements Cloneable {
     // 要能够通过用户id找到对应的链接，因此所有的链接都要存放在一个全局变量里面
     final public static ConcurrentHashMap<Integer, WebSocketServer> users = new ConcurrentHashMap<>();
     // 要知道每个链接对应的用户是谁
     private User user;
     private Session session = null;
 
-    // 定义一个全局变量用来访问数据库
+    // 定义全局变量用来访问数据库
     public static UserMapper userMapper;
     public static RecordMapper recordMapper;
     public static BotMapper botMapper;
+
     public static RestTemplate restTemplate;
     public Game game = null;
     private final static String addPlayerUrl = "http://127.0.0.1:3001/player/add/";
@@ -75,7 +76,26 @@ public class WebSocketServer {
         } else {
             this.session.close();
         }
+
+        if(! users.containsKey(1)) { // 如果大黄蜂没有登录，则登录
+            WebSocketServer yellowBee = (WebSocketServer) this.clone();
+            yellowBee.user = userMapper.selectById(1);
+            users.put(1, yellowBee);
+        }
+
         System.out.println(users);
+    }
+
+    // 浅克隆WebSocketServer对象
+    @Override
+    public Object clone() {
+        WebSocketServer newObj = null;
+        try{
+            newObj = (WebSocketServer)super.clone();
+        }catch(CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return newObj;
     }
 
     @OnClose
@@ -118,13 +138,14 @@ public class WebSocketServer {
         respGame.put("b_sx", game.getPlayerB().getSx());
         respGame.put("b_sy", game.getPlayerB().getSy());
         respGame.put("map", game.getG());
+        //生成的地图和玩家起始坐标存放在respGame里面，respGame放在respA和respB里面并发送给前端
 
         JSONObject respA = new JSONObject();
         respA.put("event", "start-matching");
         respA.put("opponent_username", b.getUsername());
         respA.put("opponent_photo", b.getPhoto());
         respA.put("game", respGame);
-        if(users.get(a.getId()) != null) {
+        if(a.getId() != 1 && users.get(a.getId()) != null) {
             users.get(a.getId()).sendMessage(respA.toJSONString());
         }
 
@@ -133,7 +154,7 @@ public class WebSocketServer {
         respB.put("opponent_username", a.getUsername());
         respB.put("opponent_photo", a.getPhoto());
         respB.put("game", respGame);
-        if(users.get(b.getId()) != null) {
+        if(b.getId() != 1 && users.get(b.getId()) != null) {
             users.get(b.getId()).sendMessage(respB.toJSONString());
         }
     }

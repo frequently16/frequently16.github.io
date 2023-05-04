@@ -1,6 +1,6 @@
 <template>
     <ContentField>
-        <table class="table table-striped table-hover" style="text-align: center;">
+        <table class="table table-striped table-hover" style="text-align: left;">
             <thead>
                 <tr>
                     <th>玩家</th>
@@ -122,7 +122,7 @@ export default {
 
 <style scoped>
 img.record-user-photo {
-    width: 4vh;
+    width: 10vmin;
     border-radius: 50%;
 }
 </style>

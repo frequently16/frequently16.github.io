@@ -75,12 +75,21 @@ public class MatchingPool extends Thread{
         boolean[] used = new boolean[players.size()];
         for(int i = 0; i < players.size(); i++){
             if(used[i]) continue;
+            if(players.get(i).getWaitingTime() >= 5) {//匹配池中如果有等待时间超过5s的，大黄蜂与之匹配
+                used[i] = true;
+                sendResult(players.get(i), new Player(1, 1500, 1, 0));
+                continue;
+            }
             for(int j = i + 1; j < players.size(); j++){
                 if(used[i]) continue;
                 Player a = players.get(i), b = players.get(j);
                 if(checkMatched(a, b)) {
                     used[i] = used[j] = true;
-                    sendResult(a, b);
+                    try {
+                        sendResult(a, b);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
                     break;
                 }
             }

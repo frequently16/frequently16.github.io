@@ -31,7 +31,7 @@
                 <button @click="click_match_btn" type="button" class="btn btn-warning btn-lg">{{ match_btn_info }}</button>
             </div>
             <div class="alert alert-secondary" role="alert" style="width: 290px; margin: auto; margin-top: 40px;" v-if="match_btn_info === '取消'">
-                若5秒内无人匹配大黄蜂将主动出战
+                5秒内无人匹配大黄蜂将主动出战!
             </div>
         </div>
     </div>

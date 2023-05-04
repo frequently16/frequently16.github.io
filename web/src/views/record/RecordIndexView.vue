@@ -1,6 +1,6 @@
 <template>
     <ContentField>
-        <table class="table table-striped table-hover" style="text-align: center;">
+        <table class="table table-striped table-hover" style="text-align: left;">
             <thead>
                 <tr>
                     <th>
@@ -150,9 +150,11 @@ export default {
                     console.log(record);
                     store.commit("updateGamemap", {
                         map: stringTo2D(record.record.map),
+                        a_username: record.a_username,
                         a_id: record.record.aid,
                         a_sx: record.record.asx,
                         a_sy: record.record.asy,
+                        b_username: record.b_username,
                         b_id: record.record.bid,
                         b_sx: record.record.bsx,
                         b_sy: record.record.bsy,
@@ -216,7 +218,7 @@ export default {
 
 <style scoped>
 img.record-user-photo {
-    width: 4vh;
+    width: 10vmin;
     border-radius: 50%;
 }
 </style>

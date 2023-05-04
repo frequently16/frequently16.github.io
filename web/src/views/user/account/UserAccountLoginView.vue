@@ -13,6 +13,7 @@
                     </div>
                     <div class="error-message">{{ error_message }}</div>
                     <button type="submit" class="btn btn-primary">提交</button>
+                    <div class="error-message">测试账户：bb&emsp;&emsp;&emsp;&emsp;密码：pbb</div>
                 </form>
             </div>
         </div>
