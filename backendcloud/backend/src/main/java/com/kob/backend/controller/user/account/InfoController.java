@@ -13,7 +13,7 @@ public class InfoController {
     private InfoService infoService;
 
     // 获取信息用Get，修改、删除、添加信息用Post
-    @GetMapping("/user/account/info/")
+    @GetMapping("/api/user/account/info/")
     public Map<String, String> getinfo(){
         return infoService.getinfo();
     }

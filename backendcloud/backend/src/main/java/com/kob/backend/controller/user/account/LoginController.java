@@ -14,7 +14,7 @@ public class LoginController {
     private LoginService loginService;
 
     //用post不用get是因为post用密文传输，更安全
-    @PostMapping("/user/account/token/")
+    @PostMapping("/api/user/account/token/")
     // getToken方法需要传入两个信息（username、password），服务器需要从post请求中把参数拿出来放到一个map里面
     public Map<String, String> getToken(@RequestParam Map<String, String> map){
         String username = map.get("username");

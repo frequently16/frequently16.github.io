@@ -106,9 +106,10 @@ export class Snake extends AcGameObject{
     update() {  // 每一帧执行一次
         if (this.status === 'move') {
             this.update_move();
+            this.render(); 
+        } else {
+            this.render();
         }
-
-        this.render();
     }
 
     render(){

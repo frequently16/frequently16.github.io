@@ -109,7 +109,7 @@ export default {
         const pull_page = page => {//查询某一个页面的内容
             current_page = page;
             $.ajax({
-                url: "http://127.0.0.1:3000/record/getlist/",
+                url: "https://app4904.acapp.acwing.com.cn/api/record/getlist/",
                 data: {
                     page,
                 },
@@ -164,6 +164,7 @@ export default {
                         b_steps: record.record.bsteps,
                     });
                     store.commit("updateRecordLoser", record.record.loser);
+                    store.commit("updateRecordId", recordId);
                     router.push({
                         name: "record_content",
                         params: {

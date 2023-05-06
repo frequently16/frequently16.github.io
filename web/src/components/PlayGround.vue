@@ -1,16 +1,16 @@
 <template>
     <div class="row">
         <div class="col-3">
-            <div class="card" style="margin-top: 20px;" v-if="! $store.state.record.is_record">
+            <div class="card" style="margin-top: 20px;" v-if="$store.state.pk.status === 'playing'">
                 <button type="button" class="btn btn-primary">Tips</button>
                 <div class="card-body">
                     <table class="table" style="text-align: center;">
                         <tbody>
                             <tr>
-                            <td>我的持方：<canvas :id="$store.state.pk.b_id == parseInt($store.state.user.id) ? 2 : 1" width="30" height="30"></canvas></td>
+                            <td>我的持方：<canvas :id="parseInt($store.state.pk.b_id) === parseInt($store.state.user.id) ? 2 : 1" width="30" height="30"></canvas></td>
                             </tr>
                             <tr>
-                            <td>{{ $store.state.pk.opponent_username }}的持方：<canvas :id="$store.state.pk.b_id == parseInt($store.state.user.id) ? 1 : 2" width="30" height="30"></canvas></td>
+                            <td>{{ $store.state.pk.opponent_username }}的持方：<canvas :id="parseInt($store.state.pk.b_id) === parseInt($store.state.user.id) ? 1 : 2" width="30" height="30"></canvas></td>
                             </tr>
                             <tr>
                             <td>
@@ -81,6 +81,7 @@ export default {
     components: {
         GameMap,
     },
+
     mounted() {
         var canvas = document.getElementById(1);
         var ctx1 = canvas.getContext("2d");

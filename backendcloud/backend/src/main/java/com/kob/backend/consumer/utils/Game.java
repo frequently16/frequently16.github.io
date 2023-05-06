@@ -190,14 +190,10 @@ public class Game extends Thread{
                 Thread.sleep(200);
                 lock.lock();
                 try {
-                    if(nextStepA != null && nextStepB == null) {
-                        System.out.println("玩家输入已读入，但bot输入未读入！");
-                    }
                     // 如果接收到了两名玩家的下一步输入就退出函数
                     if(nextStepA != null && nextStepB != null){
                         playerA.getSteps().add(nextStepA);
                         playerB.getSteps().add(nextStepB);
-                        System.out.println("两名玩家的输入都读到了！");
                         return true;
                     }
                 } finally {

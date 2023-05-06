@@ -16,8 +16,7 @@ public class ReceiveBotMoveServiceImpl implements ReceiveBotMoveService {
             if(game != null){
                 if(game.getPlayerA().getId().equals(userId)){
                     game.setNextStepA(direction);
-                }else if(game.getPlayerB().getId().equals(userId)){
-                    System.out.println("bot的方向：" + direction);
+                }else if(game.getPlayerB().getId().equals(userId)) {
                     game.setNextStepB(direction);
                 }
             }

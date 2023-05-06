@@ -1,9 +1,12 @@
 package com.kob.botrunningsystem.utils;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Scanner;
 
-public class Bot implements com.kob.botrunningsystem.utils.BotInterface {
+public class Bot implements java.util.function.Supplier<Integer> {
     int headX, headY; // 记录getCells函数执行后的蛇头坐标
     int[][] g;
     int[] dx = {-1, 0, 1, 0}, dy = {0, 1, 0, -1};
@@ -66,7 +69,7 @@ public class Bot implements com.kob.botrunningsystem.utils.BotInterface {
 
         return cnt;
     }
-    @Override
+
     public Integer nextMove(String input) {
         String[] strs = input.split("#");
         g = new int[13][14];
@@ -91,6 +94,15 @@ public class Bot implements com.kob.botrunningsystem.utils.BotInterface {
         for(Cell c : aCells) g[c.x][c.y] = 1;
         for(Cell c : bCells) g[c.x][c.y] = 1;
 
+        // 两蛇头处于7字两个角，则有可能绝杀
+        int margX = x - opponentHeadX, margY = y - opponentHeadY;
+        if(Math.abs(margX * margY) == 2) {
+            if(margX == 1 && g[x - 1][y] == 0) return 0;
+            else if(margX == -1 && g[x + 1][y] == 0) return 2;
+            else if(margY == 1 && g[x][y - 1] == 0) return 3;
+            else if(g[x][y + 1] == 0) return 1;
+        }
+
         // 伪dfs搜索找到四个方向的最长路径
         int[] dec_len = new int[4];
         for(int i = 0; i < 4; i++) {
@@ -113,5 +125,17 @@ public class Bot implements com.kob.botrunningsystem.utils.BotInterface {
         }
 
         return decision; // 如果四个方向都不能走decision==3
+    }
+
+    @Override
+    public Integer get() {
+        File file = new File("input.txt");
+        try {
+            Scanner sc = new Scanner(file);
+            return nextMove(sc.next());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

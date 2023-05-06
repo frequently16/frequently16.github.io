@@ -5,6 +5,7 @@ export default {
         a_step: "",
         b_step: "",
         record_loser: "",
+        record_id: null,
     },
     getters: {
     },
@@ -18,6 +19,9 @@ export default {
         },
         updateRecordLoser(state, loser) {
             state.record_loser = loser;
+        },
+        updateRecordId(state, id) {
+            state.record_id = id;
         }
     },
     actions: { //异步操作只能放到actions里，如：从服务器拉取信息            

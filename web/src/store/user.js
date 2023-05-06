@@ -35,7 +35,7 @@ export default {
     actions: { //异步操作只能放到actions里，如：从服务器拉取信息
         login(context, data) {
             $.ajax({
-                url: "http://127.0.0.1:3000/user/account/token/",
+                url: "https://app4904.acapp.acwing.com.cn/api/user/account/token/",
                 type: "post",
                 data: {
                   username: data.username,
@@ -58,7 +58,7 @@ export default {
         },
         getinfo(context, data) {
             $.ajax({
-              url: "http://127.0.0.1:3000/user/account/info/",
+              url: "https://app4904.acapp.acwing.com.cn/api/user/account/info/",
               type: "get",
               headers: {//需要传一个表头，传到Authorization(授权)里面
                 Authorization: "Bearer " + context.state.token,
