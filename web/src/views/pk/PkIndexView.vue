@@ -47,7 +47,7 @@ export default {
                     });
                     setTimeout(() => {
                         store.commit("updateStatus", "playing");
-                    }, 500);
+                    }, 900); //这900毫秒用来展示对手信息，留100毫秒用来等后端传信息
                     store.commit("updateGamemap", data.game);
                 } else if(data.event === "move") {
                     console.log(data);
@@ -85,4 +85,9 @@ export default {
 </script>
 
 <style scoped>
+div.playground {
+    width: 60vw;
+    height: 70vh;
+    margin: 40px auto;
+}
 </style>

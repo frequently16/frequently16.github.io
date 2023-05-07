@@ -65,7 +65,7 @@
                     </table>
                 </div>
             </div>         
-        </div>
+        </div>        
         <div class="col-8 mx-auto">
             <div class="playground">
                 <GameMap />

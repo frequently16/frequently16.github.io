@@ -167,6 +167,15 @@ public class Game extends Thread{
 
     private void sendBotCode(Player player) {
         if(player.getBotId().equals(-1)) return; // 如果亲自出马则不需要执行代码
+        //如果玩家用的bot，且玩家还没走第一步，那么此时他的前端界面还在显示对方玩家信息，并没有进入游戏界面
+        //所以此时不应该立即执行bot代码，不然返回的结果前端因为还没创建对象，所以收不到。这样会导致整场游戏都错位了。
+        if(player.getSteps().size() == 0 && player.getId() != 1) {
+            try {
+                sleep(1000);//与前端展示对手头像的时间相同
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         MultiValueMap<String, String> data = new LinkedMultiValueMap<>();
         data.add("user_id", player.getId().toString());
         data.add("bot_code", player.getBotCode());

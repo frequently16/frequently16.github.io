@@ -50,10 +50,10 @@ export class GameMap extends AcGameObject {
             const loser = this.store.state.record.record_loser;
             const interval_id = setInterval(() => {
                 if (k <= a_steps.length - 1) {//加上这个判断就可以防止steps为空时越界访问
-                    snake0.set_direction(parseInt(a_steps[k]));
                     snake0.set_eye_direction(parseInt(a_steps[k]));
-                    snake1.set_direction(parseInt(b_steps[k]));
                     snake1.set_eye_direction(parseInt(b_steps[k]));
+                    snake0.set_direction(parseInt(a_steps[k]));
+                    snake1.set_direction(parseInt(b_steps[k]));
                 }
                 if (k >= a_steps.length - 1) {//蛇的最后一步一定是非法的，所以一旦渲染到最后一步，直接标记死亡
                     if (loser === "all" || loser === "A") {
@@ -66,7 +66,7 @@ export class GameMap extends AcGameObject {
                     clearInterval(interval_id);
                 }
                 k++
-            }, 300);
+            }, 400);//每一步走完后停留时间都拉长些，可以多留些时间让页面渲染
         } else {
             this.ctx.canvas.focus();
             this.ctx.canvas.addEventListener("keydown", e => {

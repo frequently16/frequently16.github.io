@@ -159,18 +159,19 @@ export default {
                         b_sx: record.record.bsx,
                         b_sy: record.record.bsy,
                     });
-                    store.commit("updateSteps", {
-                        a_steps: record.record.asteps,
-                        b_steps: record.record.bsteps,
-                    });
-                    store.commit("updateRecordLoser", record.record.loser);
                     store.commit("updateRecordId", recordId);
+                    // 先画出地图，再更新steps
                     router.push({
                         name: "record_content",
                         params: {
                             recordId
                         }
                     })
+                    store.commit("updateSteps", {
+                        a_steps: record.record.asteps,
+                        b_steps: record.record.bsteps,
+                    });
+                    store.commit("updateRecordLoser", record.record.loser);
                     break;
                 }
             }

@@ -82,11 +82,11 @@ export class Snake extends AcGameObject{
         if(distance < this.eps){//走到目标点了
             this.cells[0] = this.next_cell;  // 添加一个新蛇头
             this.next_cell = null;
-            this.status = "idle";  //走完了，停下来
 
             if(! this.check_tail_increasing()){//蛇不变长
                 this.cells.pop();
             }
+            this.status = "idle";  //走完了，停下来
         }else{
             const move_distance = this.speed * this.timedelta / 1000;  //每两帧之间走的距离
             this.cells[0].x += move_distance * dx / distance;
@@ -106,7 +106,7 @@ export class Snake extends AcGameObject{
     update() {  // 每一帧执行一次
         if (this.status === 'move') {
             this.update_move();
-            this.render(); 
+            this.render();
         } else {
             this.render();
         }
